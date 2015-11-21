@@ -97,9 +97,12 @@ yay: bay day gay hay jay lay may nay pay ray say way
 
 \subsection hashfunction Our Hash Function
 
-...here you would briefly introduce the three hash functions
-you experimented with, the tests you ran, and the results that
-caused you to make your choice...
+FNV-1a: FNV starts with an initial hash and multiplies it by an offset basis 
+(a really large number) and then uses the XOR logic comparison on the value
+and each byte in the string. It is said to have a generally uniform
+distribution and relatively fast runtime. We chose this hash function because
+it has a higher average avalanche, which is the change in output per small 
+change in input.
 
 \subsection hashtable Our Hash Table
 

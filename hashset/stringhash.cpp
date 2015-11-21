@@ -1,6 +1,6 @@
 /**
  * \file stringhash.hpp
- * \author Names go here
+ * \author Ricky Pan, Amy Huang
  *
  * \brief Hash function for strings
  */
@@ -20,50 +20,66 @@ namespace {
 
 
 /**
- * This is a length-based hash function, a hash function based purely on
- * string length.  It's deliberately terrible.
+ * DJB-2
  *
- * /remarks CS 70 Note: This is a bad hash function as a placeholder
- *          for one you might actually find.  You should replace it.
+ * /remarks This hash function generates pseudo-random numbers quickly, 
+ *          contributing to a fast runtime and a reasonable distribution of 
+ *          hash values.
  *
+ * /source
+ *     http://stackoverflow.com/questions/19892609/djb2-by-dan-bernstein-for-c
  */
-size_t simpleLengthHash(const string& str)
+size_t djb2(const string& str)
 {
-    return str.length();
+    unsigned long hash = 5381;
+    for (auto c : str) {
+        hash = (hash << 5) + hash + c; /* hash * 33 + c */
+    }
+    return hash;
 }
 
 
 /**
- * This is a simple addition hash function.  It's deliberately terrible.
+ * FNV-1a
  *
- * /remarks CS 70 Note: This is a bad hash function as a placeholder
- *          for one you might actually find.  You should replace it.
+ * /remarks 
  *
+ * /source
+ *     http://www.boost.org/doc/libs/1_38_0/libs/unordered/examples/fnv1.hpp
  */
-size_t simpleAddHash(const string& str)
+size_t fnv1a(const string& str)
 {
-    size_t hash = 0;
+    size_t OffsetBasis = 14695981039346656037U;
+    size_t FnvPrime = 1099511628211U;
 
-    for (unsigned char c : str) {
-        hash = hash + c;
+    size_t hash = OffsetBasis;
+    for(std::string::const_iterator it = str.begin(), end = str.end();
+            it != end; ++it)
+    {
+        hash ^= *it;
+        hash *= FnvPrime;
     }
 
     return hash;
 }
 
 /**
- * This is a simple multiplication hash function.  It's deliberately bad.
+ * SDBM
  *
- * /remarks CS 70 Note: This is a bad hash function as a placeholder
- *          for one you might actually find.  You should replace it.
+ * /remarks Scrambles bits, which causes a fairly uniform distribution 
+ *          of keys and fewer splits.
  *
+ * /source http://www.cse.yorku.ca/~oz/hash.html
  */
-size_t simpleMultHash(const string& str)
+size_t sdbm(const string& str)
 {
-    size_t hash = 1;
+    unsigned int hash = 0;
+    unsigned int i = 0;
+    unsigned int len = str.length();
 
-    for (unsigned char c : str) {
-        hash = hash * c;
+    for (i = 0; i < len; i++)
+    {
+        hash = (str[i]) + (hash << 6) + (hash << 16) - hash;
     }
 
     return hash;
@@ -73,9 +89,7 @@ size_t simpleMultHash(const string& str)
 
 size_t myhash(const string& str)
 {
-    // FIXME: Make this code call your favorite of the ones you've defined
-    //        above.
-    return simpleMultHash(str);
+    return fnv1a(str);
 }
 
 // You don't have to fully understand this code, but it is used to provide a
@@ -83,8 +97,8 @@ size_t myhash(const string& str)
 // of your hash function (for printing) and the actual function name from
 // above.
 std::initializer_list<HashFunctionInfo> hashInfo = {
-    {"Simple Length (Dummy)",   simpleLengthHash},
-    {"Simple Add (Dummy)",      simpleAddHash},
-    {"Simple Mult (Dummy)",     simpleMultHash}  // No comma for last one
+    {"DJB2",        djb2},
+    {"FNV-1a",      fnv1a},
+    {"SDBM",        sdbm}
 };
 

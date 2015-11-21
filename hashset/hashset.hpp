@@ -1,7 +1,7 @@
 /**
  * \file hashset.hpp
  *
- * \author WHO ARE YOU?
+ * \author Ricky Pan, Amy Huang
  *
  * \brief Provides HashSet<T>, a set class template, using hash tables
  */
@@ -9,29 +9,78 @@
 #ifndef HASHSET_HPP_INCLUDED
 #define HASHSET_HPP_INCLUDED 1
 
+#include <cstddef>
+#include <forward_list>
+#include <iostream>
 
-// Any header files that are needed to typecheck the class
-// declaration should be #included here.
+template <class T>
+class HashSet {
+public:
+	/**
+	 * \brief Default constructor
+	 *
+	 */
+	HashSet();
 
+	~HashSet();
 
+	HashSet(const HashSet&) = delete;
+	HashSet operator=(const HashSet&) = delete;
 
-// Templated interfaces (e.g., the HashSet class declarations) go here
+	/**
+	 * \brief Returns the size of the hash table
+	 */
+	size_t size() const;
 
+	/**
+	 * \brief Inserts an element into the hash table
+	 *
+	 * \param T& a templated object
+	 *
+	 */
+	void insert(const T&);
 
+	/**
+	 * \brief Checks if an element is in the hash table
+	 *
+	 * \param T& a templated object
+	 *
+	 * \returns true if T is present in the hash table
+	 */
+	bool exists(const T&) const;
 
+	/**
+	 * \brief Returns the number of buckets in the hash table
+	 *
+	 */
+	size_t buckets() const;
 
+	/**
+	 * \brief Returns the number of times the has table has been resized
+	 *
+	 */
+	size_t reallocations() const;
 
+	/**
+	 * \brief Returns the number of times an insert into the current
+	 * 		  hash table representation has found a non-empty bucket
+	 *
+	 */
+	size_t collisions() const;
 
-// Most users of this header file would be interested in interfaces: how does
-// one use a HashSet<T>? What member functions does it provide? What parameters
-// do they take?
-//
-// Because the hashset code is templated, it must appear in this header file
-// instead of a normal .cpp file. We do this by moving the nasty implementation
-// details into hashset-private.hpp, and recursively including that here.  This
-// way, readers don't see the actual code unless they want to, and aren't forced
-// to manually include two separate header files every time they want to use
-// this hash table.
+	/**
+	 * \brief Returns the length of the longest chain in the hash table
+	 *
+	 */
+	size_t maximal() const;
+
+private:
+	static constexpr double MAXLOAD = 5;
+	size_t size_; 		// num elements
+	size_t buckets_; 	// size of the hash table
+	std::forward_list<T> *table_; 
+
+};
 
 #include "hashset-private.hpp"
 
