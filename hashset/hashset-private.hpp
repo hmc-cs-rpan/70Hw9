@@ -18,8 +18,8 @@
 
 // Templated code for member functions goes here
 template <class T>
-HashSet<T>::HashSet(): 
-	size_(0), buckets_(43), table_(new std::forward_list<T>[buckets_])
+HashSet<T>::HashSet() : size_(0), buckets_(HashSet::STARTING_BUCKETS),
+	table_(new std::forward_list<T>[buckets_])
 {
 	// Nothing to do here
 }
@@ -37,17 +37,49 @@ size_t HashSet<T>::size() const
 }
 
 template <class T>
-void HashSet<T>::insert(const T&)
+void HashSet<T>::insert(const T& value)
 {
-	// check load
-	// use hash function, add to end of linkedList
+	// If load is too large, resize
+	if(size_/buckets_ >= MAXLOAD) {
+		std::forward_list<T> *newTable = new std::forward_list<T>[buckets_*2];
+		
+		// Copy all items to new hash table
+		for(size_t ind = 0; ind < buckets_; ++ind) {
+
+			for(auto iter = table_[ind].begin(); 
+				iter != table_[ind].end(); ++iter) {
+
+				size_t newHashKey = ::myhash(value) % (buckets_*2);
+				newTable[newHashKey].push_front(value);
+			}
+		}
+		table_ = newTable;
+	}
+
+	size_t hashKey = ::myhash(value) % buckets_;
+
+	// Increment collisions, if necessary
+	if (!table_[hashKey].empty()) {
+		++collisions_;
+	}
+
+	// Insert new value into hash table
+	table_[hashKey].push_front(value);
+	
 	++size_;
 }
 
 template <class T>
-bool HashSet<T>::exists(const T&) const
+bool HashSet<T>::exists(const T& value) const
 {
-	// use hash function, search linkedList
+	// Use hash function, search linkedList
+	size_t hashKey = ::myhash(value) % buckets_;
+	for(auto iter = table_[hashKey].begin(); 
+		iter != table_[hashKey].end(); ++iter) {
+		if(value == *iter) {
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -60,18 +92,18 @@ size_t HashSet<T>::buckets() const
 template <class T>
 size_t HashSet<T>::reallocations() const
 {
-	return round(log(buckets_/43));
+	return round(log(buckets_/STARTING_BUCKETS));
 }
 
 template <class T>
 size_t HashSet<T>::collisions() const
 {
-	return 0;
+	return collisions_;
 }
 
 template <class T>
 size_t HashSet<T>::maximal() const
 {
-	return 0;
+	return maxCluster_;
 }
 

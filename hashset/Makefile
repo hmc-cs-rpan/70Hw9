@@ -19,7 +19,7 @@ CXXFLAGS       = -g -std=c++11 -Wall -Wextra -pedantic $(EXTRA_CXXFLAGS)
 # TARGETS is the list of all programs created when we do "make all"
 #   (and which should be deleted when we do "make clean")
 
-TARGETS = stringhash-test hashset-cow-test
+TARGETS = stringhash-test hashset-cow-test hashset-test
 
 ###############################################################################
 # "PHONY" (BUT USEFUL) MAKEFILE TARGETS
@@ -43,9 +43,10 @@ clean:
 # You should probably use a more realistic number of buckets than 10
 #       for stringhash-test, but the exact number is up to you.
 
-test: stringhash-test hashset-cow-test
+test: stringhash-test hashset-cow-test hashset-test
 	./stringhash-test 10 /usr/share/dict/web2
 	./hashset-cow-test
+	./hashset-test
 
 documentation: doxygen.config
 	doxygen doxygen.config
@@ -74,9 +75,12 @@ stringhash-test: stringhash-test.o stringhash.o
 hashset-cow-test: hashset-cow-test.o gtest-all.o
 	$(CXX) $(CXXFLAGS) -o hashset-cow-test $^
 
-# Rules for your own test program would go here (you don't have to
-#      add a comment that says what it does, if it follows the
-#      standard pattern.)
+# "make hashset-test" brings the relevant .o files up-to-date (recursively)
+#      and then links them.
+
+hashset-test: hashset-test.o gtest-all.o
+	$(CXX) $(CXXFLAGS) -o hashset-test $^
+
 
 ###############################################################################
 # GENERATING OBJECT FILES
@@ -99,9 +103,8 @@ stringhash-test.o: stringhash-test.cpp stringhash.hpp
 stringutils.o: stringutils.cpp stringutils.hpp
 	$(CXX) $(CXXFLAGS) -c stringutils.cpp
 
-# When/if you need more .o files, their dependencies and the
-#    compilation commands would go here.
-
+hashset-test.o: hashset-test.cpp hashset.hpp hashset-private.hpp
+	$(CXX) $(CXXFLAGS) -c hashset-test.cpp
 
 
 # The google test .o file is similar, except that it is

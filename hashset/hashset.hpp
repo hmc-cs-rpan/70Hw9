@@ -38,7 +38,7 @@ public:
 	 * \param T& a templated object
 	 *
 	 */
-	void insert(const T&);
+	void insert(const T& value);
 
 	/**
 	 * \brief Checks if an element is in the hash table
@@ -47,7 +47,7 @@ public:
 	 *
 	 * \returns true if T is present in the hash table
 	 */
-	bool exists(const T&) const;
+	bool exists(const T& value) const;
 
 	/**
 	 * \brief Returns the number of buckets in the hash table
@@ -76,8 +76,12 @@ public:
 
 private:
 	static constexpr double MAXLOAD = 5;
-	size_t size_; 		// num elements
-	size_t buckets_; 	// size of the hash table
+	static const size_t STARTING_BUCKETS = 43;
+
+	size_t size_; 			// current num elements
+	size_t buckets_; 		// current size of the hash table
+	size_t maxCluster_; 	// size of the largest cluster so far
+	size_t collisions_; 	// number of collisions so far
 	std::forward_list<T> *table_; 
 
 };
