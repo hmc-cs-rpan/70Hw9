@@ -1,6 +1,6 @@
 /**
- * \file stringhash.hpp
- * \author Ricky Pan, Amy Huang
+ * \file stringhash.cpp
+ * \authors Ricky Pan, Amy Huang
  *
  * \brief Hash function for strings
  */

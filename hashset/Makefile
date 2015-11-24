@@ -19,7 +19,7 @@ CXXFLAGS       = -g -std=c++11 -Wall -Wextra -pedantic $(EXTRA_CXXFLAGS)
 # TARGETS is the list of all programs created when we do "make all"
 #   (and which should be deleted when we do "make clean")
 
-TARGETS = stringhash-test hashset-cow-test hashset-test
+TARGETS = stringhash-test hashset-cow-test hashset-test myspell
 
 ###############################################################################
 # "PHONY" (BUT USEFUL) MAKEFILE TARGETS
@@ -81,6 +81,9 @@ hashset-cow-test: hashset-cow-test.o gtest-all.o
 hashset-test: hashset-test.o gtest-all.o
 	$(CXX) $(CXXFLAGS) -o hashset-test $^
 
+myspell: myspell.o
+	$(CXX) $(CXXFLAGS) -o myspell $^
+
 
 ###############################################################################
 # GENERATING OBJECT FILES
@@ -106,6 +109,8 @@ stringutils.o: stringutils.cpp stringutils.hpp
 hashset-test.o: hashset-test.cpp hashset.hpp hashset-private.hpp
 	$(CXX) $(CXXFLAGS) -c hashset-test.cpp
 
+spellchecker.o: hashset.hpp hashset-private.hpp spellchecker.hpp
+	$(CXX) $(CXXFLAGS) -c spellchecker.cpp
 
 # The google test .o file is similar, except that it is
 #    named gtest-all.cc instead of gtest-all.cpp

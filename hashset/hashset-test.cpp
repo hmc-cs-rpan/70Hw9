@@ -12,6 +12,7 @@
 #include "unistd.h" // For alarm
 
 #include <sstream>	// Convert char to string
+#include <fstream>  // Read files
 
 /// Hash function for strings
 size_t myhash(const std::string& str)
@@ -44,7 +45,7 @@ TEST(stringTestSuite, oneInsertTest)
 
     EXPECT_FALSE(stringSet.exists(testStr));
     EXPECT_EQ(stringSet.size(), 0);
-    EXPECT_EQ(stringSet.buckets(), 43);
+    EXPECT_EQ(stringSet.buckets(), 8);
     EXPECT_EQ(stringSet.reallocations(), 0);
     EXPECT_EQ(stringSet.collisions(), 0);
     EXPECT_EQ(stringSet.maximal(), 0);
@@ -52,7 +53,7 @@ TEST(stringTestSuite, oneInsertTest)
     stringSet.insert(testStr);
     EXPECT_TRUE(stringSet.exists(testStr));
     EXPECT_EQ(stringSet.size(), 1);
-    EXPECT_EQ(stringSet.buckets(), 43);
+    EXPECT_EQ(stringSet.buckets(), 8);
     EXPECT_EQ(stringSet.reallocations(), 0);
     EXPECT_EQ(stringSet.collisions(), 0);
     EXPECT_EQ(stringSet.maximal(), 1);
@@ -81,8 +82,37 @@ TEST(stringTestSuite, manyInsertTest)
 	}
 
 	EXPECT_EQ(stringSet.size(), 95);
-	EXPECT_EQ(stringSet.buckets(), 43);
-	EXPECT_EQ(stringSet.reallocations(), 0);
+	EXPECT_EQ(stringSet.buckets(), 16);
+	EXPECT_EQ(stringSet.reallocations(), 1);
+}
+
+/// Tests insert on strings from smallDict.words
+TEST(stringTestSuite, smallDictStringInsertTest)
+{
+    HashSet<std::string> stringSet;
+
+    std::string filename = "smalldict.words";
+    
+    // Open provided file
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Couldn't open file: " << filename << std::endl;
+        exit(1);
+    }
+
+    // Read data from the file, one item per line
+    std::string line;
+    while(inFile.good()) {
+        getline(inFile, line);
+        if (inFile.fail())
+            break;
+        auto hash = myhash(line);
+        stringSet.insert(line);
+    };
+
+    EXPECT_EQ(stringSet.size(), 341);
+    EXPECT_EQ(stringSet.buckets(), 64);
+    EXPECT_EQ(stringSet.reallocations(), 3);
 }
 
 /****************************

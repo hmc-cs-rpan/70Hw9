@@ -75,12 +75,13 @@ public:
 	size_t maximal() const;
 
 private:
-	static constexpr double MAXLOAD = 5;
-	static const size_t STARTING_BUCKETS = 43;
+	static constexpr double MAXLOAD = 10;
+	static const size_t STARTING_BUCKETS = 8;
 
 	size_t size_; 			// current num elements
 	size_t buckets_; 		// current size of the hash table
-	size_t maxCluster_; 	// size of the largest cluster so far
+	size_t reallocations_;	// number of resizes
+	size_t maxChain_; 		// size of the longest chain so far
 	size_t collisions_; 	// number of collisions so far
 	std::forward_list<T> *table_; 
 

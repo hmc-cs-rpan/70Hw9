@@ -1,7 +1,7 @@
 /**
  * \file myspell.cpp
  *
- * \author CS 70 Provided Code with additions by ... your names here ...
+ * \author CS 70 Provided Code, Amy Huang, Ricky Pan
  *
  * \brief Implements the UI for the spelling checker
  */
@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include "spellchecker.hpp"
 
 using namespace std;
 
@@ -24,7 +25,12 @@ using namespace std;
  */
 void spellcheck(const string& dictfile, bool debug)
 {
-    // TODO: implement spellcheck
+    string word;
+
+    SpellChecker webster(dictfile);
+    while (cin >> word) {
+        webster.spellCheck(word);
+    }
 }
 
 /// Main function, processes inputs and runs spellcheck
