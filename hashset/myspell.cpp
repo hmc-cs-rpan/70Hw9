@@ -6,13 +6,14 @@
  * \brief Implements the UI for the spelling checker
  */
 
+
+#include "stringhash.hpp"
+#include "spellchecker.hpp"
 #include <string>
 #include <iostream>
 #include <stdexcept>
-#include "spellchecker.hpp"
 
 using namespace std;
-
 
 /**
  * \brief Process input from cin and compare against the dictionary.
@@ -27,9 +28,15 @@ void spellcheck(const string& dictfile, bool debug)
 {
     string word;
 
-    SpellChecker webster(dictfile);
+    SpellChecker oxford(dictfile);
+    if (debug == true) {
+        cout << oxford.dict_.reallocations() << " expansions, load factor "
+             << double(oxford.dict_.size())/oxford.dict_.buckets() << ", "
+             << oxford.dict_.collisions() << " collisions, longest run " 
+             << oxford.dict_.maximal() << endl;
+    }
     while (cin >> word) {
-        webster.spellCheck(word);
+        oxford.spellCheck(word);
     }
 }
 

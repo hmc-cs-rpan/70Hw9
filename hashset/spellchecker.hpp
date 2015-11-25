@@ -13,33 +13,29 @@
 #include <cstddef>
 
 class SpellChecker {
-
 public:
-	/**
-	 * \brief Constructor
-	 *
-	 * \params filename, a file containing the dictionary
-	 *
-	 * \details Populates a HashSet using the dictionary
-	 */
-	SpellChecker(const std::string& filename);
+    /**
+     * \brief Constructor
+     *
+     * \params filename, a file containing the dictionary
+     *
+     * \details Populates a HashSet using the dictionary
+     */
+    SpellChecker(const std::string& filename);
 
-	SpellChecker() = delete;
-	SpellChecker(const SpellChecker&) = delete;
-	SpellChecker operator=(const SpellChecker&) = delete;
+    SpellChecker() = delete;
+    SpellChecker(const SpellChecker&) = delete;
+    SpellChecker operator=(const SpellChecker&) = delete;
 
-	/**
-	 * \brief Prints the misspelled words in the given file
-	 *        with a list of suggestions for each one
-	 *
-	 * \param filename, a file containing words
-	 *
-	 */
-	 void spellCheck(std::string& filename) const;
+    /**
+     * \brief Prints a list of suggestions for a misspelled input word
+     *
+     * \param filename, a file containing words
+     */
+     void spellCheck(std::string& word) const;
 
-private:
-	HashSet<std::string> dict_;
-
+     // The dictionary
+     HashSet<std::string> dict_;
 };
 
 #endif

@@ -106,11 +106,17 @@ change in input.
 
 \subsection hashtable Our Hash Table
 
-...here you would (very) briefly explain what kind of hash table you
-implemented, and why you chose it...
+We implemented our hash table using separate chaining because it is fairly
+easy and it has a good overall performance compared to linear probing, 
+quadratic probing, and sometimes double hashing. 
 
-...here you would briefly state the load factor you settled on,
-and your justification for choosing that particular value...
+We chose a load factor of 10. Given a perfect hash function, the length of
+each chain would be the size of the load factor. We wanted a chain that is
+not too short, because then we would have to resize too often, but not too
+long, because we would be dealing with long LinkedLists. Our final decision
+on a load factor of 10 is the result of wanting a load factor larger than 2,
+but not ridiculously large. We also feel that the load factor is more
+important for hash tables using open addressing.
 
 */
 

@@ -11,26 +11,10 @@
 #include "signal.h" // For signal
 #include "unistd.h" // For alarm
 
-#include <sstream>	// Convert char to string
+#include <sstream>  // Convert char to string
 #include <fstream>  // Read files
 
-/// Hash function for strings
-size_t myhash(const std::string& str)
-{
-    size_t OffsetBasis = 14695981039346656037U;
-    size_t FnvPrime = 1099511628211U;
-
-    size_t hash = OffsetBasis;
-    for(std::string::const_iterator it = str.begin(), end = str.end();
-            it != end; ++it)
-    {
-        hash ^= *it;
-        hash *= FnvPrime;
-    }
-
-    return hash;
-}
-
+#include "stringhash.hpp"
 #include "hashset.hpp"
 
 template class HashSet<std::string>;
@@ -44,46 +28,46 @@ TEST(stringTestSuite, oneInsertTest)
     HashSet<std::string> stringSet;
 
     EXPECT_FALSE(stringSet.exists(testStr));
-    EXPECT_EQ(stringSet.size(), 0);
-    EXPECT_EQ(stringSet.buckets(), 8);
-    EXPECT_EQ(stringSet.reallocations(), 0);
-    EXPECT_EQ(stringSet.collisions(), 0);
-    EXPECT_EQ(stringSet.maximal(), 0);
+    EXPECT_EQ(stringSet.size(), 0U);
+    EXPECT_EQ(stringSet.buckets(), 8U);
+    EXPECT_EQ(stringSet.reallocations(), 0U);
+    EXPECT_EQ(stringSet.collisions(), 0U);
+    EXPECT_EQ(stringSet.maximal(), 0U);
 
     stringSet.insert(testStr);
     EXPECT_TRUE(stringSet.exists(testStr));
-    EXPECT_EQ(stringSet.size(), 1);
-    EXPECT_EQ(stringSet.buckets(), 8);
-    EXPECT_EQ(stringSet.reallocations(), 0);
-    EXPECT_EQ(stringSet.collisions(), 0);
-    EXPECT_EQ(stringSet.maximal(), 1);
+    EXPECT_EQ(stringSet.size(), 1U);
+    EXPECT_EQ(stringSet.buckets(), 8U);
+    EXPECT_EQ(stringSet.reallocations(), 0U);
+    EXPECT_EQ(stringSet.collisions(), 0U);
+    EXPECT_EQ(stringSet.maximal(), 1U);
 }
 
 /// Tests large number of inserts
 TEST(stringTestSuite, manyInsertTest)
 {
-	HashSet<std::string> stringSet;
-	
-	std::stringstream ss;
-	std::string s;
+    HashSet<std::string> stringSet;
+    
+    std::stringstream ss;
+    std::string s;
 
-	// Insert characters
-	for (size_t ch = 32; ch < 127; ++ch) {
-		ss << ch;
-		ss >> s;
-		stringSet.insert(s);
-	}
+    // Insert characters
+    for (size_t ch = 32; ch < 127; ++ch) {
+        ss << (char)ch;
+        ss >> s;
+        stringSet.insert(s);
+    }
 
-	// Check that all the characters have been inserted
-	for (size_t ch = 32; ch < 127; ++ch) {
-		ss << ch;
-		ss >> s;
-		EXPECT_TRUE(stringSet.exists(s));
-	}
+    // Check that all the characters have been inserted
+    for (size_t ch = 32; ch < 127; ++ch) {
+        ss << ch;
+        ss >> s;
+        EXPECT_TRUE(stringSet.exists(s));
+    }
 
-	EXPECT_EQ(stringSet.size(), 95);
-	EXPECT_EQ(stringSet.buckets(), 16);
-	EXPECT_EQ(stringSet.reallocations(), 1);
+    EXPECT_EQ(stringSet.size(), 95U);
+    EXPECT_EQ(stringSet.buckets(), 16U);
+    EXPECT_EQ(stringSet.reallocations(), 1U);
 }
 
 /// Tests insert on strings from smallDict.words
@@ -106,13 +90,12 @@ TEST(stringTestSuite, smallDictStringInsertTest)
         getline(inFile, line);
         if (inFile.fail())
             break;
-        auto hash = myhash(line);
         stringSet.insert(line);
     };
 
-    EXPECT_EQ(stringSet.size(), 341);
-    EXPECT_EQ(stringSet.buckets(), 64);
-    EXPECT_EQ(stringSet.reallocations(), 3);
+    EXPECT_EQ(stringSet.size(), 341U);
+    EXPECT_EQ(stringSet.buckets(), 64U);
+    EXPECT_EQ(stringSet.reallocations(), 3U);
 }
 
 /****************************

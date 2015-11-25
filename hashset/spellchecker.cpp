@@ -5,11 +5,12 @@
  * \brief Spell checker for strings
  */
 
-#include "spellchecker.hpp"
+#include "stringhash.hpp"
 #include "hashset.hpp"
+#include "spellchecker.hpp"
 #include <cstddef>
 #include <ostream>
-#include <sstream>	// Convert char to string
+#include <sstream>  // Convert char to string
 #include <fstream>
 
 using namespace std;
@@ -17,51 +18,54 @@ using namespace std;
 
 SpellChecker::SpellChecker(const std::string& filename)
 {
-	// Open provided file
-	ifstream inputStream(filename);
-	if (!inputStream) {
-		cerr << "Couldn't open file: " << filename << endl;
+    // Open provided file
+    ifstream inputStream(filename);
+    if (!inputStream) {
+        cerr << "Couldn't open file: " << filename << endl;
         exit(1);
-	}
+    }
 
-	// Read data from the file, one item per line
+    // Read data from the file, one item per line, insert each word into dict
     string line;
     while(inputStream.good()) {
         getline(inputStream, line);
         if (inputStream.fail())
             break;
 
-        auto hash = myhash(line);
         dict_.insert(line);
     };
 }
 
 void SpellChecker::spellCheck(std::string& word) const
 {
-	// Read data from the file, one item per line
-	stringstream ss;
-	string letter;
+    string letter;
 
-	// Convert to lowercase
-	transform(word.begin(), word.end(), word.begin(), tolower());
+    // Convert to lowercase
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
 
-	if (!dict_.exists(word)) {
+    if (!dict_.exists(word)) {
 
-		cout << word << ": ";
+        cout << word << ": ";
 
-		// Check if nearby words exist
-		for (size_t i = 0; i < word.size(); ++i) {
-			string currWord = word;
-			for(size_t ch = 97; ch < 123; ++ch) {
-				ss << ch;
-				ss >> letter;
+        // Check if nearby words exist, by replacing each letter with 
+        // all possible letters
+        for (size_t i = 0; i < word.size(); ++i) {
+            string currWord = word;
 
-				currWord.replace(i, 1, letter);
-				if (dict_.exists(currWord)) {
-					cout << currWord << " ";
-				}
-			}
-		}
-		cout << endl;
-	}  
+            // loop through ASCII values for the letters a-z
+            for(size_t ch = 97; ch < 123; ++ch) {
+                stringstream ss;
+                ss << (char)ch;
+                ss >> letter;
+
+                currWord.replace(i, 1, letter);
+
+                // Print the dictionary suggestion
+                if (dict_.exists(currWord)) {
+                    cout << currWord << " ";
+                }
+            }
+        }
+        cout << endl;
+    }  
 }

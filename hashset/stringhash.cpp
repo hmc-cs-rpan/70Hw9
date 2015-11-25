@@ -85,6 +85,16 @@ size_t sdbm(const string& str)
     return hash;
 }
 
+/**
+ * reallyBadHashFunction
+ *
+ * /remarks Returns a hash value of 42. Really bad. Used for testing.
+ */
+size_t reallyBadHashFunction(const string&)
+{
+    return 42;
+}
+
 } // end of anonymous namespace
 
 size_t myhash(const string& str)
@@ -97,8 +107,9 @@ size_t myhash(const string& str)
 // of your hash function (for printing) and the actual function name from
 // above.
 std::initializer_list<HashFunctionInfo> hashInfo = {
-    {"DJB2",        djb2},
-    {"FNV-1a",      fnv1a},
-    {"SDBM",        sdbm}
+    {"DJB2",                    djb2},
+    {"FNV-1a",                  fnv1a},
+    {"SDBM",                    sdbm},
+    {"reallyBadHashFunction",   reallyBadHashFunction}
 };
 

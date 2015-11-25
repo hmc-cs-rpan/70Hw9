@@ -75,13 +75,10 @@ stringhash-test: stringhash-test.o stringhash.o
 hashset-cow-test: hashset-cow-test.o gtest-all.o
 	$(CXX) $(CXXFLAGS) -o hashset-cow-test $^
 
-# "make hashset-test" brings the relevant .o files up-to-date (recursively)
-#      and then links them.
-
-hashset-test: hashset-test.o gtest-all.o
+hashset-test: hashset-test.o stringhash.o  gtest-all.o 
 	$(CXX) $(CXXFLAGS) -o hashset-test $^
 
-myspell: myspell.o
+myspell: myspell.o spellchecker.o stringhash.o
 	$(CXX) $(CXXFLAGS) -o myspell $^
 
 
