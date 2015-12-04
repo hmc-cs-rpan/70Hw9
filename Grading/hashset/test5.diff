@@ -1,0 +1,17 @@
+--- /cs/grader/cs70grad/support/10/testcases/test5.out	2015-09-09 15:40:31.000000000 -0700
++++ test5.out	2015-12-04 13:38:07.000000000 -0800
+@@ -1,5 +1,9 @@
+-cs70grad:
+-testcases:
+-myspell:
+-words: wordy
+-dict: duct diet dint dirt dice dick
++//: 
++(acrylic): 
++/: a b c d e f g h i j k l m n o p q r s t u v w x y z 
++cs70grad: 
++testcases: 
++myspell: 
++words: wordy 
++dict: duct diet dint dirt dice dick 
++//: 

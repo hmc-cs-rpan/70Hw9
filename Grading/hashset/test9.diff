@@ -1,0 +1,4 @@
+--- /cs/grader/cs70grad/support/10/testcases/test9.out	2015-09-09 15:40:31.000000000 -0700
++++ test9.out	2015-12-04 13:38:07.000000000 -0800
+@@ -0,0 +1 @@
++8 expansions, load factor 9.79932, 18021 collisions, longest run 24

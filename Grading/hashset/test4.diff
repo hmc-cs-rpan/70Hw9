@@ -1,0 +1,10 @@
+--- /cs/grader/cs70grad/support/10/testcases/test4.out	2015-09-09 15:40:31.000000000 -0700
++++ test4.out	2015-12-04 13:38:07.000000000 -0800
+@@ -1,2 +1,5 @@
+-ait: bit cit fit hit kit lit nit pit sit tit wit act aft ant apt art aid ail aim air
+-zid: aid bid did hid kid lid mid rid tid zig zip
++ait: bit cit fit hit kit lit nit pit sit tit wit act aft ant apt art aid ail aim air 
++000cow000: 
++zid: aid bid did hid kid lid mid rid tid zig zip 
++ait: bit cit fit hit kit lit nit pit sit tit wit act aft ant apt art aid ail aim air 
++zid: aid bid did hid kid lid mid rid tid zig zip 

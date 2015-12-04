@@ -1,0 +1,18 @@
+In 234937 lines:
+  - Expected: 6.42533 hash collisions, stddev 2.53482
+  - Actual:   234934 unique hashes, 3 hash collisions:
+  - Specifically:
+	2257407170: shopwear photochronographically
+	935492874: disenthronement commodious
+	2870634930: sexto dispeaceful
+Average avalanche:
+	14.4217/64 bits for one bit change in 1 character key
+	17.2263/64 bits for one bit change in 2 character key
+	22.5856/64 bits for one bit change in 4 character key
+	26.7218/64 bits for one bit change in 8 character key
+	28.747/64 bits for one bit change in 16 character key
+	29.7314/64 bits for one bit change in 32 character key
+	30.1689/64 bits for one bit change in 64 character key
+	30.4839/64 bits for one bit change in 128 character key
+	30.6403/64 bits for one bit change in 256 character key
+ => 25.6363/64 bits on average -- Okay
